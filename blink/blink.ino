@@ -1,45 +1,37 @@
-int led=5;
-int butt=4;
-int buttState=0;
-int ledState=0;
-int t=0;
-int tStamp=0;
-int rate=500;
+#define LED_PIN 5
+#define BUTTON_PIN 4
+#define BLINK_RATE 500
+
+bool ledState = false;
+int buttonState = 0;
+int t = 0;
+int tStamp = 0;
 
 void setup() {
-    pinMode(led, OUTPUT);
-    pinMode(butt,INPUT);
-    ledState=false;
+    pinMode(LED_PIN, OUTPUT);
+    pinMode(BUTTON_PIN, INPUT);
+    ledState = false;
 }
 
 void loop() {
-  t=millis();
-  buttState=digitalRead(butt);
-  
-  if(buttState==LOW) {
-    if(tStamp<=t){
-      tStamp=t+rate ;
-      
+  t = millis();
+  buttonState = digitalRead(BUTTON_PIN);
+
+  if(buttState == LOW) {
+    if(tStamp <= t){
+      tStamp = t + BLINK_RATE;
+
       if(ledState){
-        digitalWrite(led,LOW);
-        ledState=false;
-      }else{
-        digitalWrite(led,HIGH);
-        ledState=true;
+        digitalWrite(LED_PIN, LOW);
+        ledState = false;
+      } else {
+        digitalWrite(LED_PIN, HIGH);
+        ledState = true;
       }
     }
-    
-    
-    
-    /*
-    digitalWrite(led,HIGH);
-    delay(1000);
-    digitalWrite(led,LOW);
-    delay(1000);
-    */
-  }else{
-    digitalWrite(led,LOW);
-    ledState=false;
-    tStamp=t;
+  } else {
+    digitalWrite(LED_PIN, LOW);
+    ledState = false;
+    tStamp = t;
   }
 }
