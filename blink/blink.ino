@@ -17,7 +17,7 @@ void loop() {
   t = millis();
   buttonState = digitalRead(BUTTON_PIN);
 
-  if(buttState == LOW) {
+  if(buttonState == LOW) {
     if(tStamp <= t){
       tStamp = t + BLINK_RATE;
 
