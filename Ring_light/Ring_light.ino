@@ -14,15 +14,9 @@
 // example for more information on possible values.
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRBW + NEO_KHZ800);
 
-int delayval = 200; // delay for half a second
+int delayval = 50; // delay for half a second
 
 void setup() {
-  // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
-#if defined (__AVR_ATtiny85__)
-  if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
-#endif
-  // End of trinket special code
-
   pixels.begin(); // This initializes the NeoPixel library.
 }
 
@@ -32,12 +26,9 @@ void loop() {
 
   for(int i=0;i<NUMPIXELS;i++){
 
-    // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
-    pixels.setPixelColor(i, pixels.Color(0,100,0)); // Moderately bright green color.
+    pixels.setPixelColor((i*5)%24, pixels.Color(0,50,20)); // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
 
     pixels.show(); // This sends the updated pixel color to the hardware.
-
     delay(delayval); // Delay for a period of time (in milliseconds).
-
   }
 }
