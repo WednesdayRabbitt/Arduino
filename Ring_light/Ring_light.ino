@@ -10,12 +10,12 @@
 #define RING_PIN        14      //pin for ring
 #define BUTTON_PIN      4       //pin for button
 #define DELAY           20      //delay between pixels lighting up
-#define SKIP            13       //number of pixels to skip when lighing up (1,5,7,11,13,17,19,23)
+#define SKIP            11       //number of pixels to skip when lighing up (1,5,7,11,13,17,19,23)
 
 int buttonState = HIGH;
-int t = 0;                      //time variable
-int tStamp = 0;                 //future time at which an event happens (t + DELAY)
-int count = 0;
+unsigned long t = 0;                      //time variable
+unsigned long tStamp = 0;                 //future time at which an event happens (t + DELAY)
+unsigned long count = 0;
 
 // When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
 // Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
@@ -38,9 +38,14 @@ void loop() {
   if (buttonState == HIGH){
     if(tStamp <= t){
       tStamp = t + DELAY;
-      int j = (count)*SKIP%24;
+      int j = (count*SKIP)%24;
+
+      if(j==0){
+        count=0;
+      }
+
       if(pixels.getPixelColor(j) == 0){
-        pixels.setPixelColor(j, pixels.Color(0,0,50)); // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+        pixels.setPixelColor(j, pixels.Color(50,0,40)); // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
       } else {
         pixels.setPixelColor(j, pixels.Color(0,0,0));
       }
@@ -49,10 +54,10 @@ void loop() {
     }
   } else {
     t = 0;
+    count = 0;
     for(int i=0;i<NUMPIXELS;i++){
-      pixels.setPixelColor(i, pixels.Color(50,0,50));
+      pixels.setPixelColor(i, pixels.Color(0,0,50));
       pixels.show();
     }
-    count = 0;
   }
 }
