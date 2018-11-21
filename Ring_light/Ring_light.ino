@@ -9,11 +9,13 @@
 #define NUMPIXELS       24      //number of pixels on ring
 #define RING_PIN        14      //pin for ring
 #define BUTTON_PIN      4       //pin for button
-#define DELAY           50      //delay between pixels lighting up
-#define SKIP            5       //number of pixels to skip when lighing up (1,5,7,11,13,17,19,23)
+#define DELAY           20      //delay between pixels lighting up
+#define SKIP            13       //number of pixels to skip when lighing up (1,5,7,11,13,17,19,23)
 
 int buttonState = HIGH;
 int t = 0;                      //time variable
+int tStamp = 0;                 //future time at which an event happens (t + DELAY)
+int count = 0;
 
 // When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
 // Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
@@ -29,21 +31,28 @@ void setup() {
 void loop() {
 
   buttonState = digitalRead(BUTTON_PIN);
-  
+  t = millis();
   // For a set of NeoPixels the first NeoPixel is 0, second is 1, all the way up to the count of pixels minus one.
   
-  for(int i=0;i<NUMPIXELS;i++){
-    int j = (i)*SKIP%24;
-    t = millis();
-    
-    if (buttonState == HIGH){
-      pixels.setPixelColor(j, pixels.Color(0,0,50)); // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
-      
+  
+  if (buttonState == HIGH){
+    if(tStamp <= t){
+      tStamp = t + DELAY;
+      int j = (count)*SKIP%24;
+      if(pixels.getPixelColor(j) == 0){
+        pixels.setPixelColor(j, pixels.Color(0,0,50)); // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+      } else {
+        pixels.setPixelColor(j, pixels.Color(0,0,0));
+      }
       pixels.show(); // This sends the updated pixel color to the hardware.
-      delay(DELAY); // Delay for a period of time (in milliseconds).
-    } else {
-      pixels.setPixelColor(i, pixels.Color(0,0,0));
+      count++;
+    }
+  } else {
+    t = 0;
+    for(int i=0;i<NUMPIXELS;i++){
+      pixels.setPixelColor(i, pixels.Color(50,0,50));
       pixels.show();
     }
+    count = 0;
   }
 }
