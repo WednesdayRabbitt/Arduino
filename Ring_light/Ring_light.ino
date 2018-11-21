@@ -26,7 +26,7 @@ void loop() {
 
   for(int i=0;i<NUMPIXELS;i++){
 
-    pixels.setPixelColor((i*5)%24, pixels.Color(0,50,20)); // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
+    pixels.setPixelColor((i*11)%24, pixels.Color(0,50,20)); // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
 
     pixels.show(); // This sends the updated pixel color to the hardware.
     delay(delayval); // Delay for a period of time (in milliseconds).
