@@ -10,7 +10,6 @@ int tStamp = 0;
 void setup() {
     pinMode(LED_PIN, OUTPUT);
     pinMode(BUTTON_PIN, INPUT);
-    ledState = false;
 }
 
 void loop() {
