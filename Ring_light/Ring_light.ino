@@ -1,6 +1,3 @@
-// NeoPixel Ring simple sketch (c) 2013 Shae Erisson
-// released under the GPLv3 license to match the rest of the AdaFruit NeoPixel library
-
 #include <Adafruit_NeoPixel.h>
 #ifdef __AVR__
   #include <avr/power.h>
@@ -9,12 +6,12 @@
 #define NUMPIXELS       24      //number of pixels on ring
 #define RING_PIN        14      //pin for ring
 #define BUTTON_PIN      4       //pin for button
-#define DELAY           20      //delay between pixels lighting up
-#define SKIP            11       //number of pixels to skip when lighing up (1,5,7,11,13,17,19,23)
+#define SKIP            11      //number of pixels to skip when lighing up (1,5,7,11,13,17,19,23)
 
 int buttonState = HIGH;
-unsigned long t = 0;                      //time variable
-unsigned long tStamp = 0;                 //future time at which an event happens (t + DELAY)
+int delay = 20;                 //delay between pixels lighting up
+unsigned long t = 0;            //time variable
+unsigned long tStamp = 0;       //future time at which an event happens (t + delay)
 unsigned long count = 0;
 
 // When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
@@ -37,9 +34,10 @@ void loop() {
   
   if (buttonState == HIGH){
     if(tStamp <= t){
-      tStamp = t + DELAY;
+      tStamp = t + delay
+    ;
       int j = (count*SKIP)%24;
-
+      
       if(j==0){
         count=0;
       }
