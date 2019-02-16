@@ -6,10 +6,10 @@
 #define NUMPIXELS       24      //number of pixels on ring
 #define RING_PIN        14      //pin for ring
 #define BUTTON_PIN      4       //pin for button
-#define SKIP            11      //number of pixels to skip when lighing up (1,5,7,11,13,17,19,23)
+#define delay           200     //delay between pixels lighting up
 
+int skipArray[] = {1, 5, 7, 11, 13, 17, 19, 23};
 int buttonState = HIGH;
-int delay = 20;                 //delay between pixels lighting up
 unsigned long t = 0;            //time variable
 unsigned long tStamp = 0;       //future time at which an event happens (t + delay)
 unsigned long count = 0;
@@ -18,7 +18,6 @@ unsigned long count = 0;
 // Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
 // example for more information on possible values.
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, RING_PIN, NEO_GRBW + NEO_KHZ800);
-
 
 void setup() {
   pixels.begin(); // This initializes the NeoPixel library.
@@ -29,17 +28,16 @@ void loop() {
 
   buttonState = digitalRead(BUTTON_PIN);
   t = millis();
+  int j = (count*skipArray[0])%24;
   // For a set of NeoPixels the first NeoPixel is 0, second is 1, all the way up to the count of pixels minus one.
   
   
   if (buttonState == HIGH){
     if(tStamp <= t){
-      tStamp = t + delay
-    ;
-      int j = (count*SKIP)%24;
-      
+      tStamp = t + delay;
+
       if(j==0){
-        count=0;
+        count = 0;
       }
 
       if(pixels.getPixelColor(j) == 0){
